@@ -8,10 +8,11 @@
 
   const VOTE_STATE_KEY = "hackathon_vote_cast";
   const VOTE_COOKIE_KEY = "hackathon_vote_ui";
-  const QR_PUBLIC_ORIGIN = "https://hakertone-app.minjaelove58.workers.dev";
+  const QR_PUBLIC_ORIGIN = window.location.origin;
+  const QR_IMAGE_ORIGIN = "https://quickchart.io";
 
   const requestedTeamParameter = new URLSearchParams(window.location.search).get("team") || "";
-  const requestedTeamNumber = /^[1-9][0-9]{0,2}$/.test(requestedTeamParameter)
+  const requestedTeamNumber = /^[1-9][0-9]*$/.test(requestedTeamParameter)
     ? Number(requestedTeamParameter)
     : Number.NaN;
 
@@ -69,13 +70,22 @@
   }
 
   function isValidTeamNumber(value) {
-    return Number.isSafeInteger(value) && value > 0 && value <= 999;
+    return Number.isSafeInteger(value) && value > 0;
   }
 
   function detailUrl(teamNumber) {
     const url = new URL("/game", QR_PUBLIC_ORIGIN);
     url.searchParams.set("team", String(teamNumber));
     return url.href;
+  }
+
+  function qrImageUrl(targetUrl, size = 188) {
+    const params = new URLSearchParams({
+      text: targetUrl,
+      size: String(size),
+      margin: "2"
+    });
+    return QR_IMAGE_ORIGIN + "/qr?" + params.toString();
   }
 
   function renderMessage(title, message) {
@@ -126,13 +136,13 @@
       </div>
 
       <section class="detail-qr-section" aria-labelledby="detailQrTitle">
-        <img class="detail-qr-image" src="/images/game-qr/team-${teamNumber}.png" alt="${safeTitle} 상세페이지 QR 코드" width="188" height="188">
+        <img class="detail-qr-image" src="${escapeHtml(qrImageUrl(url))}" alt="${safeTitle} 상세페이지 QR 코드" width="188" height="188" referrerpolicy="no-referrer">
         <div class="detail-qr-fallback" hidden>QR 코드를 준비하지 못했습니다.</div>
         <div class="detail-qr-copy">
           <h3 id="detailQrTitle">이 게임을 소개해 보세요</h3>
           <p>이 QR을 스캔하면 이 게임의 상세 페이지로 바로 이동합니다. 상세 페이지에서 게임을 실행하고 투표할 수 있습니다.</p>
           <code class="detail-url">${escapeHtml(url)}</code>
-          <a class="detail-qr-download" href="/images/game-qr/team-${teamNumber}.pdf" download="${teamNumber}team-game-detail-qr.pdf">QR PDF 저장</a>
+          <a class="detail-qr-download" href="${escapeHtml(qrImageUrl(url, 800))}" target="_blank" rel="noopener noreferrer">QR 이미지 저장</a>
         </div>
       </section>
     `;
