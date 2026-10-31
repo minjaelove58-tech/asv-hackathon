@@ -190,7 +190,7 @@ async function importLegacyAccounts(pool) {
 
     for (const team of teams) {
       if (!team || !Number.isInteger(Number(team.team_number)) ||
-          Number(team.team_number) < 1 || Number(team.team_number) > 15 ||
+          Number(team.team_number) < 1 ||
           typeof team.team_name !== "string" || !team.team_name.trim() ||
           team.team_name.length > 255 || !validatePasswordHash(team.access_code_hash)) {
         throw new Error("Invalid team migration row");
