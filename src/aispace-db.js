@@ -139,6 +139,88 @@ class MySqlStatement {
   }
 }
 
+function validatePasswordHash(value) {
+  return typeof value === "string" &&
+    /^pbkdf2_sha256_hex\$\d+\$[0-9a-f]{32}\$[0-9a-f]{64}$/.test(value);
+}
+
+async function importLegacyAccounts(pool) {
+  const raw = process.env.AISPACE_ACCOUNT_MIGRATION_JSON;
+  if (!raw) {
+    return;
+  }
+
+  let payload;
+  try {
+    payload = JSON.parse(raw);
+  } catch {
+    throw new Error("AISPACE_ACCOUNT_MIGRATION_JSON is not valid JSON");
+  }
+
+  const admins = Array.isArray(payload.admins) ? payload.admins : [];
+  const teams = Array.isArray(payload.teams) ? payload.teams : [];
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    for (const admin of admins) {
+      if (!admin || typeof admin.username !== "string" ||
+          !admin.username.trim() || admin.username.length > 255 ||
+          !validatePasswordHash(admin.password_hash)) {
+        throw new Error("Invalid administrator migration row");
+      }
+
+      await connection.execute(`
+        INSERT INTO admins (username, password_hash, display_name, role, is_active)
+        VALUES (?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          password_hash = VALUES(password_hash),
+          display_name = VALUES(display_name),
+          role = VALUES(role),
+          is_active = VALUES(is_active)
+      `, [
+        admin.username.trim(),
+        admin.password_hash,
+        admin.display_name || null,
+        admin.role || "admin",
+        Number(admin.is_active) === 1 ? 1 : 0
+      ]);
+    }
+
+    for (const team of teams) {
+      if (!team || !Number.isInteger(Number(team.team_number)) ||
+          Number(team.team_number) < 1 || Number(team.team_number) > 15 ||
+          typeof team.team_name !== "string" || !team.team_name.trim() ||
+          team.team_name.length > 255 || !validatePasswordHash(team.access_code_hash)) {
+        throw new Error("Invalid team migration row");
+      }
+
+      await connection.execute(`
+        INSERT INTO teams (team_number, team_name, access_code_hash, is_active)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          team_name = VALUES(team_name),
+          access_code_hash = VALUES(access_code_hash),
+          is_active = VALUES(is_active)
+      `, [
+        Number(team.team_number),
+        team.team_name.trim(),
+        team.access_code_hash,
+        Number(team.is_active) === 1 ? 1 : 0
+      ]);
+    }
+
+    await connection.commit();
+    console.log(`Imported ${admins.length} administrator account(s) and ${teams.length} team account(s)`);
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
 export class MySqlD1Database {
   constructor(pool) {
     this.pool = pool;
@@ -205,6 +287,7 @@ export async function createMySqlDatabase() {
     await pool.query(statement);
   }
 
+  await importLegacyAccounts(pool);
   await pool.query("SELECT 1 AS ok");
   return database;
 }
