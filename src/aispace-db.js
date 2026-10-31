@@ -78,6 +78,13 @@ const MYSQL_SCHEMA = [
 
 function normalizeSql(sql) {
   let normalized = String(sql).replace(/INSERT\s+OR\s+IGNORE/gi, "INSERT IGNORE");
+
+  // `key` is accepted by SQLite/D1 but is a MySQL keyword. Keep the Worker
+  // source portable and quote it only when requests are sent to MySQL.
+  if (/\b(?:FROM|UPDATE)\s+settings\b/i.test(normalized)) {
+    normalized = normalized.replace(/\bkey\b/g, "`key`");
+  }
+
   const conflict = normalized.match(/\s+ON\s+CONFLICT\s*\(\s*team_id\s*\)\s+DO\s+UPDATE\s+SET/i);
 
   if (conflict) {
