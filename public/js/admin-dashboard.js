@@ -251,21 +251,15 @@
   }
 
   function emergencyVoteEntries(snapshot) {
-    const byTeamNumber = new Map(
-      (snapshot?.votes || []).map(item => [Number(item.team_number), item])
-    );
-
-    return Array.from({ length: 15 }, (_, index) => {
-      const teamNumber = index + 1;
-      const item = byTeamNumber.get(teamNumber);
-
-      return {
-        teamNumber,
+    return (snapshot?.votes || [])
+      .map(item => ({
+        teamNumber: Number(item.team_number),
         teamName: String(item?.team_name || "미등록"),
         gameTitle: String(item?.game_title || "작품 미등록"),
         count: Math.max(0, Number(item?.vote_count) || 0)
-      };
-    });
+      }))
+      .filter(item => Number.isInteger(item.teamNumber) && item.teamNumber > 0)
+      .sort((a, b) => a.teamNumber - b.teamNumber);
   }
 
   function renderEmergencyKit(syncUrlInput = false) {
@@ -546,33 +540,38 @@
   }
 
   function renderTeams() {
-    const teamsByNumber = new Map(state.teams.map(team => [Number(team.team_number), team]));
-    $("teamTableWrap").innerHTML = Array.from({ length: 15 }, (_, index) => {
-      const teamNumber = index + 1;
-      const team = teamsByNumber.get(teamNumber);
-      if (!team) {
-        return `
-          <article class="admin-item-card">
-            <div class="item-head"><div><span class="item-kicker">${teamNumber}팀</span><h4>미등록</h4></div></div>
-            <p class="item-subline">아직 등록되지 않은 팀입니다.</p>
-          </article>`;
-      }
+    const teams = [...state.teams]
+      .sort((a, b) => Number(a.team_number) - Number(b.team_number));
 
-      const submission = team.submission_status ? statusLabel(team.submission_status) : "작품 미제출";
-      const active = Number(team.is_active) === 1 ? "계정 활성" : "계정 비활성";
-      return `
-        <article class="admin-item-card">
-          <div class="item-head"><div><span class="item-kicker">${teamNumber}팀</span><h4>${escapeHtml(team.team_name)}</h4></div></div>
-          <div class="item-meta">
-            <span class="status-badge ${Number(team.is_active) === 1 ? "status-on" : "status-off"}">${active}</span>
-            <span class="status-badge ${team.submission_status === "published" ? "status-on" : "status-draft"}">${escapeHtml(submission)}</span>
-          </div>
-          <p class="item-subline">등록: ${escapeHtml(formatUtcSql(team.created_at))}</p>
-          <div class="item-actions">
-            <button class="button button-danger team-delete-button" type="button" data-id="${Number(team.id)}" aria-label="${teamNumber}팀 ${escapeHtml(team.team_name)} 삭제">팀 삭제</button>
-          </div>
-        </article>`;
-    }).join("");
+    $("teamTableWrap").innerHTML = teams.length
+      ? teams.map(team => {
+          const teamNumber = Number(team.team_number);
+          const submission = team.submission_status
+            ? statusLabel(team.submission_status)
+            : "작품 미제출";
+          const active = Number(team.is_active) === 1
+            ? "계정 활성"
+            : "계정 비활성";
+
+          return `
+            <article class="admin-item-card">
+              <div class="item-head">
+                <div>
+                  <span class="item-kicker">${teamNumber}팀</span>
+                  <h4>${escapeHtml(team.team_name)}</h4>
+                </div>
+              </div>
+              <div class="item-meta">
+                <span class="status-badge ${Number(team.is_active) === 1 ? "status-on" : "status-off"}">${active}</span>
+                <span class="status-badge ${team.submission_status === "published" ? "status-on" : "status-draft"}">${escapeHtml(submission)}</span>
+              </div>
+              <p class="item-subline">등록: ${escapeHtml(formatUtcSql(team.created_at))}</p>
+              <div class="item-actions">
+                <button class="button button-danger team-delete-button" type="button" data-id="${Number(team.id)}" aria-label="${teamNumber}팀 ${escapeHtml(team.team_name)} 삭제">팀 삭제</button>
+              </div>
+            </article>`;
+        }).join("")
+      : messageCard("등록된 팀이 없습니다.");
   }
 
   function renderSubmissions() {
@@ -607,18 +606,18 @@
   }
 
   function voteEntries() {
-    const teamsByNumber = new Map(state.votes.map(item => [Number(item.team_number), item]));
-    return Array.from({ length: 15 }, (_, index) => {
-      const teamNumber = index + 1;
-      const item = teamsByNumber.get(teamNumber);
-      const rawCount = Number(item?.vote_count);
-      return {
-        teamNumber,
-        teamName: item?.team_name || "미등록",
-        gameTitle: item?.game_title || "작품 미등록",
-        count: Number.isFinite(rawCount) ? Math.max(0, rawCount) : 0
-      };
-    });
+    return state.votes
+      .map(item => {
+        const rawCount = Number(item?.vote_count);
+        return {
+          teamNumber: Number(item.team_number),
+          teamName: item?.team_name || "미등록",
+          gameTitle: item?.game_title || "작품 미등록",
+          count: Number.isFinite(rawCount) ? Math.max(0, rawCount) : 0
+        };
+      })
+      .filter(item => Number.isInteger(item.teamNumber) && item.teamNumber > 0)
+      .sort((a, b) => a.teamNumber - b.teamNumber);
   }
 
   function renderVoteChart(entries, detailed = false) {
@@ -879,8 +878,8 @@
     event.preventDefault();
     const teamNumber = Number($("newTeamNumber").value);
     const teamName = $("newTeamName").value.trim();
-    if (!Number.isInteger(teamNumber) || teamNumber < 1 || teamNumber > 15 || !teamName) {
-      showToast("팀 번호(1~15)와 팀 이름을 확인해 주세요.");
+    if (!Number.isInteger(teamNumber) || teamNumber < 1 || !teamName) {
+      showToast("팀 번호(1 이상)와 팀 이름을 확인해 주세요.");
       return;
     }
 
