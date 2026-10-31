@@ -843,8 +843,13 @@ export default {
       let body;
 
       try {
-        body =
-          await request.json();
+        body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
       } catch {
         return Response.json(
           {
@@ -1009,8 +1014,13 @@ export default {
       let body;
 
       try {
-        body =
-          await request.json();
+        body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
       } catch {
         return Response.json(
           {
@@ -1514,8 +1524,13 @@ export default {
       let body;
 
       try {
-        body =
-          await request.json();
+        body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
       } catch {
         return Response.json(
           {
@@ -2038,8 +2053,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
@@ -2561,6 +2581,12 @@ export default {
 
         try {
           body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             { message: "잘못된 요청입니다." },
@@ -2697,8 +2723,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
@@ -3032,8 +3063,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
@@ -3148,8 +3184,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
@@ -3248,8 +3289,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
@@ -3336,8 +3382,13 @@ export default {
         let body;
 
         try {
-          body =
-            await request.json();
+          body = await request.json();
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
         } catch {
           return Response.json(
             {
