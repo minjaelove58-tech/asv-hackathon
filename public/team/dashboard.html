@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>팀 대시보드 · 청소년 AI게임개발 헤커톤</title>
+  <link rel="stylesheet" href="../css/common.css?v=20261010-6" />
+  <link rel="stylesheet" href="../css/plaza.css?v=20261003-3" />
+  <link rel="stylesheet" href="../css/team.css?v=20261003-3" />
+</head>
+<body class="team-dashboard-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div>
+        <p class="eyebrow">TEAM DASHBOARD</p>
+        <h1><span id="teamLabel">팀</span> 작품 등록</h1>
+      </div>
+      <span id="submissionStatus" class="status-badge status-draft">작성 중</span>
+    </div>
+  </header>
+
+  <main class="container page-space team-layout">
+    <section class="panel">
+      <h2>작품 정보</h2>
+      <form id="submissionForm" class="form-stack">
+        <label>
+          <span>게임 제목</span>
+          <input id="gameTitle" maxlength="40" placeholder="예: 우주 고양이 클릭커" required />
+        </label>
+
+        <label>
+          <span>게임 소개</span>
+          <textarea id="gameDescription" rows="5" maxlength="200" placeholder="게임의 재미있는 점을 짧게 소개해 주세요."></textarea>
+        </label>
+
+        <label>
+          <span>게임 주소</span>
+          <input id="gameUrl" type="url" placeholder="https://..." />
+        </label>
+
+        <label>
+          <span>대표 이미지</span>
+          <input id="gameImage" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="imageHelp" />
+        </label>
+        <p id="imageHelp" class="helper-text">아이들이 만든 대표 이미지를 직접 올려 주세요. JPEG·PNG·WebP 파일, 최대 1MB까지 가능합니다. 임시 저장 또는 최종 제출을 누르면 함께 저장됩니다.</p>
+
+        <div class="button-row">
+          <button id="saveDraftButton" class="button button-secondary" type="button">임시 저장</button>
+          <button id="submitButton" class="button button-primary" type="button">최종 제출</button>
+        </div>
+        <div id="deleteSubmissionActions" class="delete-submission-actions hidden">
+          <p class="helper-text">저장된 작품을 지우고 처음부터 다시 등록할 수 있습니다.</p>
+          <button id="deleteSubmissionButton" class="button button-danger" type="button">작품 삭제</button>
+        </div>
+      </form>
+
+      <p id="submissionMessage" class="form-message" aria-live="polite"></p>
+    </section>
+
+    <aside class="panel preview-panel">
+      <p class="eyebrow">PREVIEW</p>
+      <h2>광장 미리보기</h2>
+      <article class="game-card preview-card">
+        <div id="previewImage" class="game-thumb game-thumb-placeholder">GAME</div>
+        <div class="game-card-body">
+          <span id="previewTeam" class="team-chip">팀</span>
+          <h3 id="previewTitle">게임 제목</h3>
+          <p id="previewDescription" class="muted">게임 소개가 여기에 표시됩니다.</p>
+          <button class="button button-primary button-full" type="button" disabled>게임하기</button>
+        </div>
+      </article>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-event-name">청소년 AI게임개발 헤커톤</p>
+      <p class="footer-description">본 사이트는 해커톤 참가 작품 공개 및 방문객 투표를 위해 운영됩니다.</p>
+      <nav class="footer-links" aria-label="정책 및 운영 안내">
+        <a href="/privacy">개인정보 처리방침</a>
+        <a href="/rewards">캐시 지급 안내</a>
+        <a href="/participation">행사 운영 안내</a>
+        <a href="/privacy#contact">운영 문의</a>
+      </nav>
+      <p class="footer-operator">주최·운영: <span class="footer-operator-brand"><img class="footer-operator-mark" src="/images/kevin-logo.jpg" alt="" /><span>안산케빈샘AI코딩학원</span></span></p>
+    </div>
+  </footer>
+
+  <script src="../js/config.js?v=20261003-3"></script>
+  <script src="../js/api.js?v=20261003-3"></script>
+  <script src="../js/team-dashboard.js?v=20261003-3"></script>
+</body>
+</html>

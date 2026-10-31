@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>팀 로그인 · 청소년 AI게임개발 헤커톤</title>
+  <link rel="stylesheet" href="../css/common.css?v=20261010-6" />
+  <link rel="stylesheet" href="../css/team.css?v=20261003-3" />
+</head>
+<body class="auth-page auth-page-with-footer">
+  <main class="auth-card">
+    <p class="eyebrow">TEAM ACCESS</p>
+    <h1>팀 대시보드</h1>
+    <p class="muted">운영진에게 받은 팀 번호와 접속 코드를 입력하세요.</p>
+
+    <form id="teamLoginForm" class="form-stack">
+      <label>
+        <span>팀 번호</span>
+        <input id="teamNumber" name="teamNumber" type="number" min="1" max="15" inputmode="numeric" required />
+      </label>
+
+      <label>
+        <span>접속 코드</span>
+        <input id="teamCode" name="teamCode" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" required />
+      </label>
+
+      <button class="button button-primary button-full" type="submit">팀 대시보드 들어가기</button>
+    </form>
+
+    <p class="helper-text">팀별 접속 코드는 운영진이 발급합니다.</p>
+    <p id="teamLoginMessage" class="form-message" aria-live="polite"></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-event-name">청소년 AI게임개발 헤커톤</p>
+      <p class="footer-description">본 사이트는 해커톤 참가 작품 공개 및 방문객 투표를 위해 운영됩니다.</p>
+      <nav class="footer-links" aria-label="정책 및 운영 안내">
+        <a href="/privacy">개인정보 처리방침</a>
+        <a href="/rewards">캐시 지급 안내</a>
+        <a href="/participation">행사 운영 안내</a>
+        <a href="/privacy#contact">운영 문의</a>
+      </nav>
+      <p class="footer-operator">주최·운영: <span class="footer-operator-brand"><img class="footer-operator-mark" src="/images/kevin-logo.jpg" alt="" /><span>안산케빈샘AI코딩학원</span></span></p>
+    </div>
+  </footer>
+
+  <script src="../js/config.js?v=20261003-3"></script>
+  <script src="../js/api.js?v=20261003-3"></script>
+  <script src="../js/team-login.js?v=20261003-3"></script>
+</body>
+</html>

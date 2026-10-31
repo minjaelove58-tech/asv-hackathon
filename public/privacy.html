@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>개인정보 처리방침 · 청소년 AI게임개발 헤커톤</title>
+  <link rel="stylesheet" href="./css/common.css?v=20261010-6" />
+</head>
+<body class="policy-page">
+  <header class="policy-header">
+    <div class="policy-header-inner">
+      <a class="policy-back-link" href="/">게임 광장으로 돌아가기</a>
+      <p class="policy-event-name">청소년 AI게임개발 헤커톤</p>
+      <h1>개인정보 처리방침</h1>
+    </div>
+  </header>
+
+  <main class="policy-main">
+    <article class="policy-document">
+      <p class="policy-lede">본 안내는 현재 사이트 코드에서 확인되는 개인정보 및 방문객 식별정보 처리 내용을 기준으로 작성되었습니다.</p>
+      <p class="policy-notice">이 페이지는 처리 내용에 관한 안내이며, 링크를 누르는 것만으로 개인정보 처리 동의를 받는 절차는 아닙니다.</p>
+
+      <section class="policy-section">
+        <h2>1. 개인정보 처리 목적</h2>
+        <p>본 사이트는 해커톤 참가 작품의 등록·공개, 팀 및 관리자 접근 관리, 방문객 투표의 중복 방지를 위해 운영됩니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>2. 처리하는 개인정보의 항목</h2>
+        <ul>
+          <li>방문객: 브라우저에 발급되는 방문객 세션 토큰, 서버에 저장되는 해당 토큰의 SHA-256 해시, 세션 생성·최근 확인 정보, 투표한 팀 정보</li>
+          <li>비상 종이 투표: 장애 상황에서 중복 투표 확인과 집계 검증을 위해 작성하는 이름, 서명, 선택한 작품, 투표 시각</li>
+          <li>참가팀: 팀 번호, 팀 이름, 접속 코드의 해시값, 작품 제목·소개·게임 주소·대표 이미지</li>
+          <li>관리자: 관리자 아이디, 표시 이름이 설정된 경우 해당 정보, 역할, 비밀번호의 해시값</li>
+        </ul>
+        <p>정상 온라인 투표에서는 방문객의 이름·전화번호·계좌번호·주민등록번호를 입력받는 기능이 구현되어 있지 않습니다. 비상 종이 투표는 시스템 장애로 운영진이 종이 투표로 전환한 경우에만 사용합니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>3. 개인정보 보유 및 이용기간</h2>
+        <p>방문객 세션 쿠키의 브라우저 유효기간은 발급 시점부터 최대 30일로 설정되어 있습니다. 서버에 저장되는 방문객 식별정보, 투표 기록, 팀·관리자 계정 정보는 해커톤 운영에 필요한 기간 동안 보관합니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>4. 개인정보의 제3자 제공 여부</h2>
+        <p>현재 확인된 사이트 코드 기준으로 개인정보를 제3자에게 제공하는 기능은 운영하지 않습니다. 제3자 제공이 필요한 경우에는 제공 전에 제공받는 자, 목적, 항목 및 보유기간을 안내합니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>5. 개인정보 처리 위탁 여부</h2>
+        <p>현재 확인된 사이트 코드 기준으로 개인정보 처리 위탁 기능은 운영하지 않습니다. 개인정보 처리 위탁이 필요한 경우에는 수탁자와 위탁 업무를 사전에 안내합니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>6. 쿠키 및 방문객 식별정보 처리</h2>
+        <p>방문객이 게임 광장을 이용하면 서버가 방문객 세션 토큰을 발급합니다. 이 토큰은 브라우저의 HttpOnly, Secure, SameSite=Lax 쿠키로 설정되며, 쿠키 이름은 <code>hackathon_visitor</code>입니다.</p>
+        <p>서버는 쿠키의 원문 토큰 대신 SHA-256 해시값을 방문객 식별정보로 저장합니다. 투표 기록은 해당 방문객 식별정보와 투표 대상 팀을 연결해 같은 방문객의 중복 투표를 막는 데 사용됩니다.</p>
+        <p>쿠키의 유효기간과 서버 보유기간은 서로 다를 수 있습니다. 브라우저 쿠키가 최대 30일로 설정되어 있어도 서버 기록은 해커톤 운영에 필요한 기간 동안 별도로 보관될 수 있습니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>7. 개인정보 파기 절차</h2>
+        <p>현재 확인된 코드에는 방문객 식별정보와 투표 기록의 정기 파기 일정 또는 자동 파기 절차가 구현되어 있지 않습니다. 운영 목적이 끝난 정보는 운영 절차에 따라 안전하게 파기합니다. 비상 종이 투표지는 집계와 결과 검증이 끝난 뒤 안전하게 파기합니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>8. 정보주체의 권리 및 행사 방법</h2>
+        <p>정보주체 또는 법정대리인은 관련 법령에 따라 열람, 정정·삭제, 처리정지 등을 요청할 수 있습니다. 요청은 아래 운영 문의 안내를 통해 접수할 수 있습니다.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>9. 만 14세 미만 아동의 개인정보 처리</h2>
+        <p>행사에 만 14세 미만 아동이 참여할 수 있습니다. 개인정보 처리에 법정대리인 동의가 필요한 경우에는 관련 절차를 진행합니다.</p>
+      </section>
+
+      <section class="policy-section" id="contact">
+        <h2>10. 대표자 및 운영 문의</h2>
+        <p>개인정보, 작품 등록, 투표 및 행사 운영 관련 문의는 안산케빈샘AI코딩학원 운영진에게 전달해 주세요.</p>
+        <p>대표자 및 책임자: 이관희<br />대표 연락망: 010-2727-9398<br />이메일: kevin@kevinsaem.com</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>11. 처리방침 시행일</h2>
+        <p>시행일: 2026년 10월 10일</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-event-name">청소년 AI게임개발 헤커톤</p>
+      <p class="footer-description">본 사이트는 해커톤 참가 작품 공개 및 방문객 투표를 위해 운영됩니다.</p>
+      <nav class="footer-links" aria-label="정책 및 운영 안내">
+        <a href="/privacy" aria-current="page">개인정보 처리방침</a>
+        <a href="/rewards">캐시 지급 안내</a>
+        <a href="/participation">행사 운영 안내</a>
+        <a href="/privacy#contact">운영 문의</a>
+      </nav>
+      <p class="footer-operator">주최·운영: <span class="footer-operator-brand"><img class="footer-operator-mark" src="/images/kevin-logo.jpg" alt="" /><span>안산케빈샘AI코딩학원</span></span></p>
+    </div>
+  </footer>
+</body>
+</html>

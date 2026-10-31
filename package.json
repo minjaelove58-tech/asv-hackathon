@@ -1,0 +1,11 @@
+{
+  "name": "hakertone-app",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^4.135.0"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  }
+}

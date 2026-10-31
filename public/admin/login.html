@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>관리자 로그인 · 청소년 AI게임개발 헤커톤</title>
+  <link rel="stylesheet" href="../css/common.css?v=20261003-4" />
+  <link rel="stylesheet" href="../css/admin.css?v=20261003-4" />
+</head>
+<body class="auth-page admin-auth-page">
+  <main class="auth-card admin-auth-card">
+    <p class="eyebrow">ADMIN</p>
+    <h1>관리자 로그인</h1>
+    <p class="muted">행사 운영진 전용 화면입니다.</p>
+
+    <form id="adminLoginForm" class="form-stack">
+      <label>
+        <span>관리자 아이디</span>
+        <input id="adminUsername" autocomplete="username" required />
+      </label>
+      <label>
+        <span>비밀번호</span>
+        <input id="adminPassword" type="password" autocomplete="current-password" required />
+      </label>
+      <button class="button button-primary button-full" type="submit">관리자 로그인</button>
+    </form>
+
+    <p class="helper-text">관리자 계정으로 로그인하면 행사 운영 현황을 확인할 수 있습니다.</p>
+    <p id="adminLoginMessage" class="form-message" aria-live="polite"></p>
+  </main>
+
+  <script src="../js/config.js?v=20261003-3"></script>
+  <script src="../js/api.js?v=20261003-3"></script>
+  <script src="../js/admin-login.js?v=20261003-3"></script>
+</body>
+</html>

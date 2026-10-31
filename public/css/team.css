@@ -1,0 +1,31 @@
+.team-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+  gap: 22px;
+  align-items: start;
+}
+.team-layout > * { min-width: 0; }
+.team-layout .panel h2 { margin-bottom: 20px; }
+.team-layout .form-stack input, .team-layout .form-stack textarea { min-width: 0; }
+.team-layout .preview-card { min-width: 0; }
+.team-layout .preview-card h3, .team-layout .preview-card p,
+.team-layout .helper-text, .team-layout .form-message { overflow-wrap: anywhere; }
+.preview-panel { position: sticky; top: 118px; }
+.preview-card { box-shadow: none; }
+.game-thumb-placeholder { min-height: 180px; }
+.preview-card .button { margin-top: 14px; }
+.delete-submission-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid var(--line); }
+.delete-submission-actions .helper-text { margin: 0; }
+.delete-submission-actions .button { flex: 0 0 auto; }
+
+@media (max-width: 850px) {
+  .team-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .preview-panel { position: static; }
+}
+@media (max-width: 680px) {
+  .team-layout .panel { padding: 20px; }
+  .team-layout .button-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .team-layout .button-row .button { min-width: 0; padding-inline: 8px; }
+  .preview-panel .game-thumb { min-height: 160px; }
+  .delete-submission-actions { align-items: stretch; flex-direction: column; }
+}

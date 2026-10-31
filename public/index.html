@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>청소년 AI게임개발 헤커톤 · 게임 광장</title>
+  <link rel="stylesheet" href="./css/common.css?v=20261010-6" />
+  <link rel="stylesheet" href="./css/plaza.css?v=20261010-7" />
+</head>
+<body class="plaza-body">
+  <header class="site-header plaza-header">
+    <div class="container header-inner">
+      <div class="plaza-heading">
+        <p class="plaza-event-name">청소년 AI게임개발 헤커톤</p>
+        <h1>게임 광장</h1>
+        <p class="plaza-intro">게임을 플레이하고 가장 마음에 드는 작품 하나에 투표해 주세요.</p>
+      </div>
+      <span id="voteStatus" class="status-badge status-off">투표 준비 중</span>
+    </div>
+  </header>
+
+  <main class="container page-space">
+    <section aria-labelledby="gamesTitle">
+      <div class="section-heading plaza-section-heading">
+        <h2 id="gamesTitle"><span id="gameCount">0</span>개 작품</h2>
+        <button id="refreshButton" class="text-button" type="button" aria-label="작품 목록 새로고침">새로고침</button>
+      </div>
+
+      <!-- 작품 순서는 plaza.js에서 내부적으로 결정됩니다. -->
+      <p id="rotationStatus" class="rotation-status" aria-live="off" hidden></p>
+      <div id="gameGrid" class="game-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-event-name">청소년 AI게임개발 헤커톤</p>
+      <p class="footer-description">본 사이트는 해커톤 참가 작품 공개 및 방문객 투표를 위해 운영됩니다.</p>
+      <nav class="footer-links" aria-label="정책 및 운영 안내">
+        <a href="/privacy">개인정보 처리방침</a>
+        <a href="/rewards">캐시 지급 안내</a>
+        <a href="/participation">행사 운영 안내</a>
+        <a href="/privacy#contact">운영 문의</a>
+      </nav>
+      <p class="footer-operator">주최·운영: <span class="footer-operator-brand"><img class="footer-operator-mark" src="/images/kevin-logo.jpg" alt="" /><span>안산케빈샘AI코딩학원</span></span></p>
+    </div>
+  </footer>
+
+  <dialog id="voteDialog" class="dialog" aria-labelledby="voteDialogTitle" aria-describedby="voteDialogText">
+    <form method="dialog" class="dialog-card">
+      <p class="eyebrow">투표</p>
+      <h2 id="voteDialogTitle">이 작품에 투표할까요?</h2>
+      <p id="voteDialogText" class="muted"></p>
+      <p class="warning-text">투표한 뒤에는 변경할 수 없습니다.</p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" value="cancel">취소</button>
+        <button id="confirmVoteButton" class="button button-primary" value="default">투표하기</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="./js/config.js?v=20261003-4"></script>
+  <script src="./js/api.js?v=20261003-4"></script>
+  <script src="./js/visitor.js?v=20261010-2"></script>
+  <script src="./js/plaza.js?v=20261010-3"></script>
+</body>
+</html>

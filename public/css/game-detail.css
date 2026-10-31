@@ -1,0 +1,302 @@
+.game-detail-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: #f5f6f8;
+  color: #171717;
+}
+
+.game-detail-header {
+  border-bottom: 1px solid #e3e6ea;
+  background: #fff;
+}
+
+.game-detail-header-inner,
+.game-detail-main {
+  width: min(820px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.game-detail-header-inner { padding: 15px 0 20px; }
+
+.game-detail-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #3556d8;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.game-detail-event-name {
+  margin: 10px 0 4px;
+  color: #6b6b6b;
+  font-size: .84rem;
+  font-weight: 700;
+}
+
+.game-detail-header h1 {
+  margin: 0;
+  color: #171717;
+  font-size: clamp(1.85rem, 7vw, 2.35rem);
+  letter-spacing: -.035em;
+}
+
+.game-detail-main {
+  flex: 1 0 auto;
+  padding: 28px 0 50px;
+}
+
+.detail-load-status {
+  margin: 0 0 14px;
+  color: #6b6b6b;
+  font-size: .9rem;
+}
+
+.game-detail-card,
+.detail-message {
+  padding: 22px;
+  border: 1px solid #e3e6ea;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
+}
+
+.detail-hero {
+  display: grid;
+  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.detail-thumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border-radius: 12px;
+  background: #eceff2;
+  color: #737980;
+  font-size: .9rem;
+  font-weight: 650;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.detail-thumbnail img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #eceff2;
+}
+
+.detail-team-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  max-width: 100%;
+  padding: 3px 9px;
+  border: 1px solid #e3e8ff;
+  border-radius: 999px;
+  background: #f0f3ff;
+  color: #5267c4;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.detail-title-row h2 {
+  margin: 0;
+  color: #171717;
+  font-size: clamp(1.45rem, 5vw, 2rem);
+  letter-spacing: -.03em;
+  line-height: 1.2;
+}
+
+.detail-vote-status {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid #dfe5ff;
+  border-radius: 999px;
+  background: #f1f4ff;
+  color: #3556d8;
+  font-size: .76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.detail-vote-status::before {
+  content: "●";
+  margin-right: 5px;
+  font-size: .68em;
+}
+
+.detail-vote-status.is-closed {
+  border-color: #e1e4e8;
+  background: #f5f6f8;
+  color: #6b6b6b;
+}
+
+.detail-summary {
+  margin: 14px 0 0;
+  color: #565656;
+  font-size: 1rem;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.detail-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.detail-actions .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: 10px;
+}
+
+.detail-more-games-button {
+  grid-column: 1 / -1;
+  width: 100%;
+  border-color: #b9c8ff;
+  background: #eef2ff;
+  color: #2945b7;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.detail-more-games-button::before {
+  content: "←";
+  margin-right: 8px;
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.detail-more-games-button:hover {
+  border-color: #8fa5ff;
+  background: #e3eaff;
+}
+
+.detail-qr-section {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid #e3e6ea;
+}
+
+.detail-qr-image {
+  display: block;
+  width: 188px;
+  height: 188px;
+  image-rendering: pixelated;
+}
+
+.detail-qr-copy h3 {
+  margin: 0;
+  color: #171717;
+  font-size: 1.05rem;
+}
+
+.detail-qr-copy p {
+  margin: 8px 0 0;
+  color: #6b6b6b;
+  font-size: .93rem;
+  line-height: 1.6;
+}
+
+.detail-url {
+  display: block;
+  margin-top: 10px;
+  padding: 9px 10px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e3e6ea;
+  border-radius: 8px;
+  background: #f7f8fa;
+  color: #4d4d4d;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.detail-qr-download {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: 1px solid #d9dfe8;
+  border-radius: 9px;
+  color: #3556d8;
+  font-size: .88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.detail-qr-download:hover { border-color: #bfc9e9; background: #f6f8ff; }
+.detail-qr-download:focus-visible { outline: 3px solid #173aab; outline-offset: 3px; }
+
+.detail-qr-fallback {
+  width: 188px;
+  min-height: 188px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  background: #f7f8fa;
+  color: #6b6b6b;
+  font-size: .88rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.detail-qr-fallback[hidden] { display: none !important; }
+
+.detail-message h2 { margin: 0; font-size: 1.25rem; }
+.detail-message p { margin: 10px 0 0; color: #6b6b6b; line-height: 1.6; }
+
+@media (max-width: 620px) {
+  .game-detail-header-inner,
+  .game-detail-main { width: min(100% - 28px, 820px); }
+  .game-detail-header-inner { padding-top: 11px; }
+  .game-detail-main { padding: 20px 0 40px; }
+  .game-detail-card, .detail-message { padding: 16px; }
+  .detail-hero { grid-template-columns: 108px minmax(0, 1fr); gap: 14px; }
+  .detail-thumbnail { padding: 9px; border-radius: 10px; font-size: .74rem; }
+  .detail-title-row { display: block; margin-top: 7px; }
+  .detail-vote-status { margin-top: 9px; }
+  .detail-summary { margin-top: 12px; font-size: .94rem; }
+  .detail-actions { margin-top: 18px; }
+  .detail-qr-section { grid-template-columns: 1fr; justify-items: center; gap: 15px; text-align: center; }
+  .detail-qr-image, .detail-qr-fallback { width: 174px; height: 174px; min-height: 174px; }
+  .detail-url { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-detail-page .button { transition: none; }
+}

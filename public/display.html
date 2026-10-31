@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>청소년 AI게임개발 헤커톤 · 현장 화면</title>
+  <link rel="stylesheet" href="./css/common.css?v=20261003-3" />
+  <link rel="stylesheet" href="./css/display.css?v=20261003-3" />
+</head>
+<body class="display-body">
+  <main class="display-shell">
+    <section class="display-hero">
+      <p class="eyebrow">청소년 AI게임개발 헤커톤</p>
+      <h1>게임 광장에 참여해 주세요!</h1>
+      <p>휴대폰으로 QR을 스캔하고 참가팀의 게임을 직접 플레이해 보세요.</p>
+    </section>
+
+    <section class="display-grid">
+      <article class="display-stat">
+        <span>공개 게임</span>
+        <strong id="displayGames">—</strong>
+      </article>
+      <article class="display-stat">
+        <span>방문객 수</span>
+        <strong id="displayVisitors">—</strong>
+      </article>
+      <article class="display-stat">
+        <span>투표 참여</span>
+        <strong id="displayVotes">—</strong>
+      </article>
+    </section>
+
+    <div class="display-live" role="status" aria-live="polite">
+      <span class="display-live-dot" aria-hidden="true"></span>
+      <span id="displayStatus">운영 현황을 불러오는 중입니다.</span>
+      <a id="displayLoginLink" href="/admin/login" hidden>관리자 로그인</a>
+    </div>
+
+    <section class="qr-panel">
+      <img class="plaza-qr" src="./images/plaza-qr.png" alt="게임 광장에 접속하는 QR 코드" width="238" height="247" />
+      <div>
+        <p class="eyebrow">SCAN & PLAY</p>
+        <h2>게임 광장 QR</h2>
+        <p class="muted">휴대폰 카메라로 QR을 스캔해 게임 광장에 접속하세요.</p>
+      </div>
+    </section>
+
+    <p class="display-footnote">※ 팀별 순위와 득표 수는 현장 화면에 표시하지 않습니다.</p>
+  </main>
+
+  <script src="./js/api.js?v=20261003-3"></script>
+  <script src="./js/display.js?v=20261003-3"></script>
+</body>
+</html>
