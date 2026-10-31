@@ -24,6 +24,7 @@
     teams: "팀 관리",
     submissions: "작품 관리",
     votes: "투표 현황",
+    data: "데이터 관리",
     emergency: "비상 운영 키트",
     logs: "관리자 로그"
   };
@@ -33,6 +34,7 @@
     teams: "참가팀과 접속 코드를 관리하세요.",
     submissions: "제출된 작품을 확인하고 공개 상태를 관리하세요.",
     votes: "팀별 득표 현황을 확인하세요.",
+    data: "AISPACE MySQL의 행사 기록을 관리자 화면에서 관리하세요.",
     emergency: "장애 때에도 이어갈 수 있도록 현장 운영 자료를 준비하세요.",
     logs: "관리자 운영 기록을 확인하세요."
   };
@@ -485,6 +487,18 @@
     $("statVotes").textContent = String(data.votes ?? 0);
     $("statSubmitted").textContent = String(data.submitted ?? 0);
     $("statPublished").textContent = String(data.published ?? 0);
+
+    if ($("dataVisitors")) {
+      $("dataVisitors").textContent = String(data.visitors ?? 0);
+      $("dataVotes").textContent = String(data.votes ?? 0);
+      $("dataSubmitted").textContent = String(data.submitted ?? 0);
+      $("dataPublished").textContent = String(data.published ?? 0);
+      $("adminDbStatus").textContent = "연결됨";
+      $("adminDbStatus").className = "status-badge status-on";
+      $("adminDbStatusText").textContent =
+        "관리자 API가 AISPACE MySQL에서 최신 집계값을 읽었습니다.";
+    }
+
     $("overviewStatus").classList.add("hidden");
 
     const settings = data.settings || {};
@@ -791,6 +805,7 @@
       if (section === "teams") await loadTeams();
       if (section === "submissions") await loadSubmissions();
       if (section === "votes") await loadVotes();
+      if (section === "data") await loadOverview();
       if (section === "emergency") renderEmergencyKit(true);
       if (section === "logs") await loadLogs();
     } catch (error) {
@@ -1045,10 +1060,51 @@
     }
   });
 
+  async function runDataReset(scope, confirmMessage, successMessage, button, errorMessage) {
+    if (state.overview?.settings?.votingOpen) {
+      showToast("투표를 먼저 중단해 주세요.");
+      return;
+    }
+
+    if (!confirm(confirmMessage)) return;
+
+    button.disabled = true;
+
+    try {
+      const result = await api.resetAdminData(scope);
+      const deleted = result.deleted || {};
+      showToast(
+        `${successMessage} 방문객 ${Number(deleted.visitors || 0)}명, 투표 ${Number(deleted.votes || 0)}표를 처리했습니다.`
+      );
+      await Promise.all([loadOverview(), loadVotes(), loadLogs()]);
+    } catch (error) {
+      handleError(error, errorMessage);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
   $("refreshSubmissionsButton").addEventListener("click", () => loadSection("submissions"));
   $("refreshDashboardVotesButton").addEventListener("click", () => loadSection("dashboard"));
   $("refreshVotesButton").addEventListener("click", () => loadSection("votes"));
   $("refreshLogsButton").addEventListener("click", () => loadSection("logs"));
+  $("refreshDataManagementButton").addEventListener("click", () => loadSection("data"));
+
+  $("resetVotesButton").addEventListener("click", () => runDataReset(
+    "votes",
+    "투표 기록을 모두 초기화할까요?\\n\\n방문객 수는 유지되고, 모든 팀의 득표수만 0표가 됩니다.",
+    "투표 기록을 초기화했습니다.",
+    $("resetVotesButton"),
+    "투표 기록을 초기화하지 못했습니다."
+  ));
+
+  $("resetVisitorsVotesButton").addEventListener("click", () => runDataReset(
+    "visitor_votes",
+    "방문객·투표 기록을 모두 초기화할까요?\\n\\n팀과 작품은 유지되지만 방문객 수와 득표수가 0으로 돌아갑니다. 이 작업은 되돌릴 수 없습니다.",
+    "방문객·투표 기록을 초기화했습니다.",
+    $("resetVisitorsVotesButton"),
+    "방문객·투표 기록을 초기화하지 못했습니다."
+  ));
 
   $("refreshEmergencyKitButton").addEventListener("click", async () => {
     const button = $("refreshEmergencyKitButton");
