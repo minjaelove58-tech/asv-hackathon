@@ -105,7 +105,7 @@
         </div>
         <div class="vote-summary"><span>총 투표</span><strong id="dashboardVoteTotal">—</strong><span>표</span></div>
         <p id="dashboardVotesStatus" class="admin-update-status" role="status">득표 현황을 불러오는 중…</p>
-        <div id="dashboardVoteTableWrap" class="vote-chart" role="region" aria-label="1팀부터 15팀까지 득표 현황">불러오는 중…</div>
+        <div id="dashboardVoteTableWrap" class="vote-chart" role="region" aria-label="등록 팀별 득표 현황">불러오는 중…</div>
       </section>
     </section>
 
@@ -122,7 +122,7 @@
         <h4>새 팀 등록</h4>
         <div class="admin-form-grid">
           <label for="newTeamNumber">팀 번호
-            <input id="newTeamNumber" type="number" min="1" max="15" required inputmode="numeric" placeholder="1~15" />
+            <input id="newTeamNumber" type="number" min="1" required inputmode="numeric" placeholder="1 이상" />
           </label>
           <label for="newTeamName">팀 이름
             <input id="newTeamName" type="text" maxlength="80" required placeholder="팀 이름" />
@@ -143,7 +143,7 @@
       </div>
 
       <p class="admin-note">팀을 삭제하면 해당 팀의 작품, 대표 이미지, 투표 기록도 함께 삭제되며 되돌릴 수 없습니다.</p>
-      <div id="teamTableWrap" class="admin-card-list" aria-label="1팀부터 15팀까지 팀 목록">불러오는 중…</div>
+      <div id="teamTableWrap" class="admin-card-list" aria-label="등록 팀 목록">불러오는 중…</div>
     </section>
 
     <section class="admin-section hidden" data-panel="submissions">
@@ -172,7 +172,7 @@
       <p class="admin-note">득표수는 관리자 화면에서만 확인합니다. 공개 광장에는 순위나 득표수를 표시하지 않습니다.</p>
       <div class="vote-summary"><span>총 투표</span><strong id="votesTotal">—</strong><span>표</span></div>
       <p id="votesStatus" class="admin-update-status" role="status">득표 현황을 불러오는 중…</p>
-      <div id="voteTableWrap" class="vote-chart vote-chart-detailed" role="region" aria-label="1팀부터 15팀까지 게임별 득표 현황">불러오는 중…</div>
+      <div id="voteTableWrap" class="vote-chart vote-chart-detailed" role="region" aria-label="등록 팀별 게임 득표 현황">불러오는 중…</div>
     </section>
 
     <section class="admin-section hidden" data-panel="data">
@@ -282,6 +282,6 @@
 
   <script src="../js/config.js?v=20261003-3"></script>
   <script src="../js/api.js?v=20261003-3"></script>
-  <script src="../js/admin-dashboard.js?v=20261031-1"></script>
+  <script src="../js/admin-dashboard.js?v=20261031-2"></script>
 </body>
 </html>
