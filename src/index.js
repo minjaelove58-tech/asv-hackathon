@@ -2698,28 +2698,33 @@ export default {
           );
 
 
+        await env.DB
+          .prepare(`
+            INSERT INTO teams (
+              team_number,
+              team_name,
+              access_code_hash,
+              is_active
+            )
+
+            VALUES (?, ?, ?, 1)
+          `)
+          .bind(
+            teamNumber,
+            teamName,
+            accessCodeHash
+          )
+          .run();
+
         const team =
           await env.DB
             .prepare(`
-              INSERT INTO teams (
-                team_number,
-                team_name,
-                access_code_hash,
-                is_active
-              )
-
-              VALUES (?, ?, ?, 1)
-
-              RETURNING
-                id,
-                team_number,
-                team_name
+              SELECT id, team_number, team_name
+              FROM teams
+              WHERE team_number = ?
+              LIMIT 1
             `)
-            .bind(
-              teamNumber,
-              teamName,
-              accessCodeHash
-            )
+            .bind(teamNumber)
             .first();
 
 

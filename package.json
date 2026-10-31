@@ -1,11 +1,16 @@
 {
   "name": "hakertone-app",
   "private": true,
+  "type": "module",
+  "dependencies": {
+    "mysql2": "^3.14.3"
+  },
   "devDependencies": {
     "wrangler": "^4.135.0"
   },
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "start": "node src/node-server.js"
   }
 }
