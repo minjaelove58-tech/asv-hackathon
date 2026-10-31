@@ -1091,7 +1091,7 @@
 
   $("resetVotesButton").addEventListener("click", () => runDataReset(
     "votes",
-    "투표 기록을 모두 초기화할까요?\\n\\n방문객 수는 유지되고, 모든 팀의 득표수만 0표가 됩니다.",
+    "투표 기록을 모두 초기화할까요?\n\n방문객 수는 유지되고, 모든 팀의 득표수만 0표가 됩니다.",
     "투표 기록을 초기화했습니다.",
     $("resetVotesButton"),
     "투표 기록을 초기화하지 못했습니다."
@@ -1099,7 +1099,7 @@
 
   $("resetVisitorsVotesButton").addEventListener("click", () => runDataReset(
     "visitor_votes",
-    "방문객·투표 기록을 모두 초기화할까요?\\n\\n팀과 작품은 유지되지만 방문객 수와 득표수가 0으로 돌아갑니다. 이 작업은 되돌릴 수 없습니다.",
+    "방문객·투표 기록을 모두 초기화할까요?\n\n팀과 작품은 유지되지만 방문객 수와 득표수가 0으로 돌아갑니다. 이 작업은 되돌릴 수 없습니다.",
     "방문객·투표 기록을 초기화했습니다.",
     $("resetVisitorsVotesButton"),
     "방문객·투표 기록을 초기화하지 못했습니다."
