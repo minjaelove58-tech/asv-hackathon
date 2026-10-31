@@ -486,6 +486,18 @@
   }
 
 
+  function resetAdminData(scope) {
+    return request(
+      "/api/admin/reset",
+      {
+        method: "POST",
+        auth: "admin",
+        body: JSON.stringify({ scope })
+      }
+    );
+  }
+
+
   // ==================================================
   // EXPORT
   // ==================================================
@@ -522,6 +534,7 @@
     getAdminSubmissions,
     getAdminVotes,
     getAdminLogs,
+    resetAdminData,
 
     getStats:
       getAdminOverview
