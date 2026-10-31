@@ -1,5 +1,20 @@
 (() => {
   const status = document.getElementById("displayStatus");
+  const plazaQr = document.getElementById("plazaQr");
+  const qrTargetUrl = new URL("/", window.location.origin).href;
+
+  if (plazaQr) {
+    const qrParams = new URLSearchParams({
+      text: qrTargetUrl,
+      size: "238",
+      margin: "2"
+    });
+    plazaQr.src = "https://quickchart.io/qr?" + qrParams.toString();
+    plazaQr.addEventListener("error", () => {
+      plazaQr.alt = "게임 광장 주소: " + qrTargetUrl;
+      plazaQr.hidden = true;
+    }, { once: true });
+  }
   const statusContainer = status.parentElement;
   const loginLink = document.getElementById("displayLoginLink");
   const games = document.getElementById("displayGames");
