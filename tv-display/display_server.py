@@ -17,7 +17,7 @@ from typing import Optional
 
 HOST = "127.0.0.1"
 PORT = 8765
-REMOTE_GAMES_URL = "https://hakertone-app.minjaelove58.workers.dev/api/public/games"
+REMOTE_GAMES_URL = "https://jisabo-asv-hackathon.mycafe24.ai/api/public/games"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TV_ROOT = PROJECT_ROOT / "tv-display"
 PUBLIC_ROOT = PROJECT_ROOT / "public"
