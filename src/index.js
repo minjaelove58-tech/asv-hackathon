@@ -3423,4 +3423,214 @@ export default {
         }
 
         const updateResult = await env.DB
-        
+          .prepare(`
+            UPDATE submissions
+
+            SET
+              status = ?,
+              updated_at =
+                CURRENT_TIMESTAMP
+
+            WHERE id = ?
+          `)
+          .bind(
+            status,
+            submissionId
+          )
+          .run();
+
+        if (Number(updateResult.meta?.changes || 0) !== 1) {
+          return Response.json(
+            { message: "작품 상태가 변경되었습니다. 목록을 새로고침해 주세요." },
+            { status: 409 }
+          );
+        }
+
+        await writeAdminLog(
+          env,
+          admin.id,
+          status === "published"
+            ? "submission_publish"
+            : "submission_unpublish",
+          `${submission.team_number}팀 ${submission.title || "작품"}`
+        );
+
+        return Response.json({
+          ok: true,
+          submissionId,
+          status
+        });
+      }
+
+
+      // ================================================
+      // SUBMISSIONS
+      // ================================================
+
+      if (
+        path ===
+          "/api/admin/submissions" &&
+        request.method === "GET"
+      ) {
+        const result =
+          await env.DB
+            .prepare(`
+              SELECT
+                s.id,
+                s.team_id,
+
+                t.team_number,
+                t.team_name,
+
+                s.title,
+                s.description,
+                s.game_url,
+                s.thumbnail_url,
+                s.status,
+                s.submitted_at,
+                s.updated_at
+
+              FROM submissions s
+
+              JOIN teams t
+                ON t.id = s.team_id
+
+              ORDER BY
+                t.team_number ASC
+            `)
+            .all();
+
+
+        return Response.json({
+          ok: true,
+
+          submissions:
+            result.results || []
+        });
+      }
+
+
+      // ================================================
+      // VOTE COUNTS
+      // ================================================
+
+      if (
+        path ===
+          "/api/admin/votes" &&
+        request.method === "GET"
+      ) {
+        const result =
+          await env.DB
+            .prepare(`
+              SELECT
+                t.id AS team_id,
+                t.team_number,
+                t.team_name,
+
+                (
+                  SELECT s.title
+                  FROM submissions s
+                  WHERE s.team_id = t.id
+                  LIMIT 1
+                ) AS game_title,
+
+                COUNT(v.id) AS vote_count
+
+              FROM teams t
+
+              LEFT JOIN votes v
+                ON v.team_id = t.id
+
+              GROUP BY
+                t.id,
+                t.team_number,
+                t.team_name
+
+              ORDER BY
+                t.team_number ASC
+            `)
+            .all();
+
+
+        return Response.json({
+          ok: true,
+
+          votes:
+            result.results || []
+        }, {
+          headers: { "Cache-Control": "no-store" }
+        });
+      }
+
+
+      // ================================================
+      // ADMIN LOGS
+      // ================================================
+
+      if (
+        path ===
+          "/api/admin/logs" &&
+        request.method === "GET"
+      ) {
+        const result =
+          await env.DB
+            .prepare(`
+              SELECT
+                l.id,
+                l.action,
+                l.details,
+                l.created_at,
+
+                a.username,
+                a.display_name
+
+              FROM admin_logs l
+
+              LEFT JOIN admins a
+                ON a.id = l.admin_id
+
+              ORDER BY
+                l.id DESC
+
+              LIMIT 200
+            `)
+            .all();
+
+
+        return Response.json({
+          ok: true,
+
+          logs:
+            result.results || []
+        });
+      }
+
+
+      return Response.json(
+        {
+          message:
+            "Admin API route not found"
+        },
+        {
+          status: 404
+        }
+      );
+    }
+
+
+    // ==================================================
+    // UNKNOWN API
+    // ==================================================
+
+    return Response.json(
+      {
+        message:
+          "API route not found"
+      },
+      {
+        status: 404
+      }
+    );
+  }
+};
+
