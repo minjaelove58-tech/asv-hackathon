@@ -3,6 +3,21 @@
   const visitors = document.getElementById("displayVisitors");
   const voting = document.getElementById("displayVoting");
   const status = document.getElementById("displayStatus");
+  const plazaQr = document.getElementById("plazaQr");
+  const qrTargetUrl = "https://jisabo-asv-hackathon.mycafe24.ai/";
+
+  if (plazaQr) {
+    const qrParams = new URLSearchParams({
+      text: qrTargetUrl,
+      size: "238",
+      margin: "2"
+    });
+    plazaQr.src = "https://quickchart.io/qr?" + qrParams.toString();
+    plazaQr.addEventListener("error", () => {
+      plazaQr.alt = "게임 광장 주소: " + qrTargetUrl;
+      plazaQr.hidden = true;
+    }, { once: true });
+  }
   const statusContainer = status.parentElement;
   let inFlight = false;
   let hasData = false;
