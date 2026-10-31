@@ -26,7 +26,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIRECTORY = PROJECT_ROOT / "public" / "images" / "game-qr"
 PUBLIC_URL = os.environ.get(
     "HACKATHON_PUBLIC_URL",
-    "https://hakertone-app.minjaelove58.workers.dev",
+    "https://jisabo-asv-hackathon.mycafe24.ai",
 ).rstrip("/")
 TEAM_NUMBERS = range(1, 16)
 KOREAN_FONT = "HYSMyeongJo-Medium"
