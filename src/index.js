@@ -2549,6 +2549,102 @@ export default {
 
 
       // ================================================
+      // EVENT DATA RESET
+      // 투표가 중단된 상태에서 운영 기록을 안전하게 초기화한다.
+      // 팀, 작품, 관리자 계정과 관리자 로그는 유지한다.
+      // ================================================
+
+      if (
+        path === "/api/admin/reset" &&
+        request.method === "POST"
+      ) {
+        let body;
+
+        try {
+          body = await request.json();
+        } catch {
+          return Response.json(
+            { message: "잘못된 요청입니다." },
+            { status: 400 }
+          );
+        }
+
+        const scope = String(body.scope || "").trim();
+
+        if (scope !== "votes" && scope !== "visitor_votes") {
+          return Response.json(
+            { message: "초기화 범위가 올바르지 않습니다." },
+            { status: 400 }
+          );
+        }
+
+        const votingSetting = await env.DB
+          .prepare(`
+            SELECT value
+            FROM settings
+            WHERE key = 'voting_open'
+            LIMIT 1
+          `)
+          .first();
+
+        if (votingSetting?.value === "true") {
+          return Response.json(
+            { message: "투표를 먼저 중단한 뒤 초기화해 주세요." },
+            { status: 409 }
+          );
+        }
+
+        const counts = await env.DB
+          .prepare(`
+            SELECT
+              (SELECT COUNT(*) FROM votes) AS votes,
+              (SELECT COUNT(*) FROM visitors) AS visitors
+          `)
+          .first();
+
+        let deletedVotes = 0;
+        let deletedVisitors = 0;
+
+        if (scope === "votes") {
+          const result = await env.DB
+            .prepare("DELETE FROM votes")
+            .run();
+          deletedVotes = Number(result.meta?.changes || counts?.votes || 0);
+        } else {
+          const results = await env.DB.batch([
+            env.DB.prepare("DELETE FROM votes"),
+            env.DB.prepare("DELETE FROM visitors")
+          ]);
+          deletedVotes = Number(results[0]?.meta?.changes || counts?.votes || 0);
+          deletedVisitors = Number(results[1]?.meta?.changes || counts?.visitors || 0);
+        }
+
+        const action = scope === "votes"
+          ? "event_votes_reset"
+          : "event_visitor_votes_reset";
+        const details = scope === "votes"
+          ? `투표 기록 초기화 (투표 ${deletedVotes}표, 방문객 기록 유지)`
+          : `방문객·투표 기록 초기화 (방문객 ${deletedVisitors}명, 투표 ${deletedVotes}표)`;
+
+        await writeAdminLog(
+          env,
+          admin.id,
+          action,
+          details
+        );
+
+        return Response.json({
+          ok: true,
+          scope,
+          deleted: {
+            votes: deletedVotes,
+            visitors: deletedVisitors
+          }
+        });
+      }
+
+
+      // ================================================
       // TEAMS LIST
       // ================================================
 
@@ -3327,213 +3423,4 @@ export default {
         }
 
         const updateResult = await env.DB
-          .prepare(`
-            UPDATE submissions
-
-            SET
-              status = ?,
-              updated_at =
-                CURRENT_TIMESTAMP
-
-            WHERE id = ?
-          `)
-          .bind(
-            status,
-            submissionId
-          )
-          .run();
-
-        if (Number(updateResult.meta?.changes || 0) !== 1) {
-          return Response.json(
-            { message: "작품 상태가 변경되었습니다. 목록을 새로고침해 주세요." },
-            { status: 409 }
-          );
-        }
-
-        await writeAdminLog(
-          env,
-          admin.id,
-          status === "published"
-            ? "submission_publish"
-            : "submission_unpublish",
-          `${submission.team_number}팀 ${submission.title || "작품"}`
-        );
-
-        return Response.json({
-          ok: true,
-          submissionId,
-          status
-        });
-      }
-
-
-      // ================================================
-      // SUBMISSIONS
-      // ================================================
-
-      if (
-        path ===
-          "/api/admin/submissions" &&
-        request.method === "GET"
-      ) {
-        const result =
-          await env.DB
-            .prepare(`
-              SELECT
-                s.id,
-                s.team_id,
-
-                t.team_number,
-                t.team_name,
-
-                s.title,
-                s.description,
-                s.game_url,
-                s.thumbnail_url,
-                s.status,
-                s.submitted_at,
-                s.updated_at
-
-              FROM submissions s
-
-              JOIN teams t
-                ON t.id = s.team_id
-
-              ORDER BY
-                t.team_number ASC
-            `)
-            .all();
-
-
-        return Response.json({
-          ok: true,
-
-          submissions:
-            result.results || []
-        });
-      }
-
-
-      // ================================================
-      // VOTE COUNTS
-      // ================================================
-
-      if (
-        path ===
-          "/api/admin/votes" &&
-        request.method === "GET"
-      ) {
-        const result =
-          await env.DB
-            .prepare(`
-              SELECT
-                t.id AS team_id,
-                t.team_number,
-                t.team_name,
-
-                (
-                  SELECT s.title
-                  FROM submissions s
-                  WHERE s.team_id = t.id
-                  LIMIT 1
-                ) AS game_title,
-
-                COUNT(v.id) AS vote_count
-
-              FROM teams t
-
-              LEFT JOIN votes v
-                ON v.team_id = t.id
-
-              GROUP BY
-                t.id,
-                t.team_number,
-                t.team_name
-
-              ORDER BY
-                t.team_number ASC
-            `)
-            .all();
-
-
-        return Response.json({
-          ok: true,
-
-          votes:
-            result.results || []
-        }, {
-          headers: { "Cache-Control": "no-store" }
-        });
-      }
-
-
-      // ================================================
-      // ADMIN LOGS
-      // ================================================
-
-      if (
-        path ===
-          "/api/admin/logs" &&
-        request.method === "GET"
-      ) {
-        const result =
-          await env.DB
-            .prepare(`
-              SELECT
-                l.id,
-                l.action,
-                l.details,
-                l.created_at,
-
-                a.username,
-                a.display_name
-
-              FROM admin_logs l
-
-              LEFT JOIN admins a
-                ON a.id = l.admin_id
-
-              ORDER BY
-                l.id DESC
-
-              LIMIT 200
-            `)
-            .all();
-
-
-        return Response.json({
-          ok: true,
-
-          logs:
-            result.results || []
-        });
-      }
-
-
-      return Response.json(
-        {
-          message:
-            "Admin API route not found"
-        },
-        {
-          status: 404
-        }
-      );
-    }
-
-
-    // ==================================================
-    // UNKNOWN API
-    // ==================================================
-
-    return Response.json(
-      {
-        message:
-          "API route not found"
-      },
-      {
-        status: 404
-      }
-    );
-  }
-};
+        
