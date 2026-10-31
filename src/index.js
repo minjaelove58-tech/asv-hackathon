@@ -1038,13 +1038,12 @@ export default {
       if (
         !Number.isInteger(teamNumber) ||
         teamNumber < 1 ||
-        teamNumber > 15 ||
         !accessCode
       ) {
         return Response.json(
           {
             message:
-              "팀 번호와 접속 코드를 확인해 주세요."
+              "팀 번호(1 이상)와 접속 코드를 확인해 주세요."
           },
           {
             status: 400
@@ -2728,13 +2727,12 @@ export default {
           !Number.isInteger(
             teamNumber
           ) ||
-          teamNumber < 1 ||
-          teamNumber > 15
+          teamNumber < 1
         ) {
           return Response.json(
             {
               message:
-                "팀 번호는 1~15 사이여야 합니다."
+                "팀 번호는 1 이상의 정수여야 합니다."
             },
             {
               status: 400
