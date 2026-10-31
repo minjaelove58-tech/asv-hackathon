@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>관리자 대시보드 · 청소년 AI게임개발 헤커톤</title>
   <link rel="stylesheet" href="../css/common.css?v=20261003-4" />
-  <link rel="stylesheet" href="../css/admin.css?v=20261021-2" />
+  <link rel="stylesheet" href="../css/admin.css?v=20261031-1" />
 </head>
 <body class="admin-body">
   <header class="admin-shell-header">
@@ -27,6 +27,7 @@
     <button class="nav-button" data-section="teams" type="button" aria-pressed="false">팀</button>
     <button class="nav-button" data-section="submissions" type="button" aria-pressed="false">작품</button>
     <button class="nav-button" data-section="votes" type="button" aria-pressed="false">투표</button>
+    <button class="nav-button" data-section="data" type="button" aria-pressed="false">데이터 관리</button>
     <button class="nav-button" data-section="emergency" type="button" aria-pressed="false">비상</button>
     <button class="nav-button" data-section="logs" type="button" aria-pressed="false">설정</button>
   </nav>
@@ -174,6 +175,46 @@
       <div id="voteTableWrap" class="vote-chart vote-chart-detailed" role="region" aria-label="1팀부터 15팀까지 게임별 득표 현황">불러오는 중…</div>
     </section>
 
+    <section class="admin-section hidden" data-panel="data">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">운영 DB</p>
+          <h3>데이터 관리</h3>
+        </div>
+        <button id="refreshDataManagementButton" class="button button-secondary" type="button">새로고침</button>
+      </div>
+
+      <div class="data-management-grid">
+        <article class="control-card data-status-card">
+          <div class="control-heading">
+            <h4>AISPACE MySQL 연결</h4>
+            <span id="adminDbStatus" class="status-badge status-on">연결 확인 중</span>
+          </div>
+          <p id="adminDbStatusText" class="muted">관리자 API 응답을 확인하는 중입니다.</p>
+          <dl class="data-summary-list">
+            <div><dt>방문객 세션</dt><dd id="dataVisitors">—</dd></div>
+            <div><dt>총 투표</dt><dd id="dataVotes">—</dd></div>
+            <div><dt>제출 작품</dt><dd id="dataSubmitted">—</dd></div>
+            <div><dt>공개 작품</dt><dd id="dataPublished">—</dd></div>
+          </dl>
+        </article>
+
+        <article class="control-card data-danger-card">
+          <div class="control-heading">
+            <h4>행사 기록 초기화</h4>
+            <span class="status-badge status-off">주의</span>
+          </div>
+          <p>팀·작품·관리자 계정은 유지하고 방문객과 투표 기록만 초기화합니다. 초기화 전에는 반드시 투표를 중단하세요.</p>
+          <div class="control-actions data-reset-actions">
+            <button id="resetVotesButton" class="button button-secondary" type="button">투표 기록만 초기화</button>
+            <button id="resetVisitorsVotesButton" class="button button-danger" type="button">방문객·투표 기록 초기화</button>
+          </div>
+        </article>
+      </div>
+
+      <p class="admin-note">투표 기록만 초기화하면 방문객 수는 유지됩니다. 방문객·투표 기록 초기화는 당일 행사 시작 전에 사용하세요. 모든 초기화 작업은 관리자 로그에 남습니다.</p>
+    </section>
+
     <section class="admin-section hidden" data-panel="emergency">
       <div class="section-heading">
         <div>
@@ -241,6 +282,6 @@
 
   <script src="../js/config.js?v=20261003-3"></script>
   <script src="../js/api.js?v=20261003-3"></script>
-  <script src="../js/admin-dashboard.js?v=20261021-2"></script>
+  <script src="../js/admin-dashboard.js?v=20261031-1"></script>
 </body>
 </html>
