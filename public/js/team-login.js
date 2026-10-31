@@ -44,7 +44,6 @@
           teamNumber
         ) ||
         teamNumber < 1 ||
-        teamNumber > 15 ||
         !accessCode
       ) {
         message.textContent =
